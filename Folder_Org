@@ -1,0 +1,27 @@
+# Move-SpecificFileByDate.ps1
+
+# Prompt user for file/folder name
+$fileName = Read-Host "Enter the name of the file or folder you want to move"
+
+# Prompt user for date (in format yyyy-MM-dd)
+$dateInput = Read-Host "Enter the date (format: yyyy-MM-dd)"
+
+# Paths
+$downloadsPath = "$env:USERPROFILE\Downloads"
+$organizedPath = Join-Path -Path $downloadsPath -ChildPath "Organized\$dateInput"
+
+# Create date-based folder if it doesn't exist
+if (-Not (Test-Path -Path $organizedPath)) {
+    New-Item -ItemType Directory -Path $organizedPath -Force | Out-Null
+}
+
+# Full path of the item
+$itemPath = Join-Path -Path $downloadsPath -ChildPath $fileName
+
+# Check if item exists
+if (Test-Path -Path $itemPath) {
+    Move-Item -Path $itemPath -Destination $organizedPath
+    Write-Output "Moved '$fileName' to '$organizedPath'"
+} else {
+    Write-Output "File or folder '$fileName' does not exist in Downloads."
+}
