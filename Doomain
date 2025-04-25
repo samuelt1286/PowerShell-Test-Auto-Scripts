@@ -1,0 +1,16 @@
+# Test-API-Input.ps1
+
+# Prompt user for API URL
+$apiUrl = Read-Host "Enter the API URL you want to test (example: https://yourapi.com/health)"
+
+try {
+    $response = Invoke-WebRequest -Uri $apiUrl -Method Get -UseBasicParsing
+
+    if ($response.StatusCode -eq 200) {
+        Write-Output "API is up! Status: 200 OK"
+    } else {
+        Write-Output "API responded with Status: $($response.StatusCode)"
+    }
+} catch {
+    Write-Output "Error: Unable to reach API. $_"
+}
